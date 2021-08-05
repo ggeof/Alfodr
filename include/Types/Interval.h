@@ -55,6 +55,7 @@ namespace Alfodr
 		inline void set(T _val1, T _val2) {
 			min = std::min(_val1, _val2);
 			max = std::max(_val1, _val2);
+			init = true;
 		}
 
 		inline void decreaseTo(T _val) {
