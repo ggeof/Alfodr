@@ -14,25 +14,25 @@ namespace Alfodr{
     template<typename T>
     struct Vec2 : public Vec1<T> {
         T y; 
-        Vec2(T _x, T _y) { x = _x; y = _y; }
+        Vec2(T _x, T _y) : Vec1<T>(_x) { y = _y; }
     };
 
     template<typename T>
     struct Vec3 : public Vec2<T> {
         T z; 
-        Vec1(T _x, T _y, T _z) { x = _x; y = _y; z = _z; }
+        Vec3(T _x, T _y, T _z) : Vec2<T>(_x, _y) { z = _z; }
     };
 #pragma endregion
 
 #pragma region Definition des points
 
-    template <typename T>
+    template <typename T = float>
     using Point1D = Vec1<T>;
 
-    template <typename T>
+    template <typename T = float>
     using Point2D = Vec2<T>;
 
-    template <typename T>
+    template <typename T = float>
     using Point3D = Vec1<T>;
 
 
