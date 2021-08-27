@@ -18,10 +18,6 @@ namespace Alfodr
 	template<typename T>
 	struct Interval
 	{
-		T min; /*! Value minimum of the interval*/
-		T max; /*! Value maximum of the interval*/
-
-
 		/*!
 		 *  @brief Construct a new Interval with not value
 		 */		
@@ -119,8 +115,16 @@ namespace Alfodr
 			return _val < min&& _val > max;
 		}
 
+
+		inline getMin() const { return this->min; }
+		inline getMax() const { return this->max; }
+
 	private:
 		bool init = false;
+		
+		T min; /*! Value minimum of the interval*/
+		T max; /*! Value maximum of the interval*/
+
 	};
 }
 
