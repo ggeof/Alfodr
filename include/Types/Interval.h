@@ -116,8 +116,8 @@ namespace Alfodr
 		}
 
 
-		inline getMin() const { return this->min; }
-		inline getMax() const { return this->max; }
+		inline T getMin() const { return this->min; }
+		inline T getMax() const { return this->max; }
 
 	private:
 		bool init = false;
