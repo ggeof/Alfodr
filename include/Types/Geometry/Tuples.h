@@ -14,13 +14,13 @@ namespace Alfodr{
     template<typename T>
     struct Vec2 : public Vec1<T> {
         T y; 
-        Vec2(T _x, T _y) { x = _x; y = _y; }
+        Vec2(T _x, T _y) : Vec1<T>(_x) { y = _y; }
     };
 
     template<typename T>
     struct Vec3 : public Vec2<T> {
         T z; 
-        Vec1(T _x, T _y, T _z) { x = _x; y = _y; z = _z; }
+        Vec3(T _x, T _y, T _z) : Vec2<T>(_x, _y) { z = _z; }
     };
 #pragma endregion
 
