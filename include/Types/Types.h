@@ -2,6 +2,7 @@
 #define __TYPE_H__
 
 #include "Types/Interval.h"
+#include "Types/Parameter.h"
 #include "Types/Geometry/Geometry.h"
 
 #include <memory>

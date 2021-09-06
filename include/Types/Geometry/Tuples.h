@@ -26,13 +26,13 @@ namespace Alfodr{
 
 #pragma region Definition des points
 
-    template <typename T>
+    template <typename T = float>
     using Point1D = Vec1<T>;
 
-    template <typename T>
+    template <typename T = float>
     using Point2D = Vec2<T>;
 
-    template <typename T>
+    template <typename T = float>
     using Point3D = Vec1<T>;
 
 
