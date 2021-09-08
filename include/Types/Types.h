@@ -38,7 +38,7 @@ namespace Alfodr
 			 * 
 			 * @return std::shared_ptr<T> Pointeur vers T
 			 */
-			inline std::shared_ptr<T> value() { return single; } 
+			inline static std::shared_ptr<T> value() { return single; } 
 	
 		private:
 

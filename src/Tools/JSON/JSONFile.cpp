@@ -48,7 +48,6 @@ double readNumber(std::ifstream& file, char cReading)
 
     double value = 0;
     size_t virgule = 0, number;
-    char cReading;
     do
     {
         if(' ' == cReading || '\n' == cReading || '\t' == cReading )
