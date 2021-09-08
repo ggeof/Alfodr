@@ -12,7 +12,7 @@ file(GLOB_RECURSE INCLUDES_FILES "include/*.h")
 # Listes des fichiers CPP à compiler
 add_library(Alfodr SHARED
                 ${INCLUDES_FILES}
-                
+
                 src/Types/Interval.cpp
                 src/Types/Parameter.cpp
 
@@ -20,6 +20,10 @@ add_library(Alfodr SHARED
                 src/Tools/CSV/Column.cpp
                 src/Tools/CSV/Table.cpp
                 src/Tools/CSV/FileCSV.cpp
+                
+                src/Tools/JSON/Pair.cpp
+                src/Tools/JSON/Objet.cpp
+                src/Tools/JSON/JSONFile.cpp
 
                 )
 
