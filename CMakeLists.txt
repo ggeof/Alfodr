@@ -14,10 +14,13 @@ add_library(Alfodr SHARED
                 ${INCLUDES_FILES}
                 src/Types/Interval.cpp
                 src/Types/Parameter.cpp
-                src/Tools/Chrono/Chrono.cpp
-                src/testAlfodr.cpp)
+                src/Tools/Chrono/Chrono.cpp "src/SoftwareManager/User/Setup.cpp" "src/SoftwareManager/User/User.cpp" "src/SoftwareManager/User/Logs.cpp")
 
 
+# Definition de compilation
+if (UNIX)
+    add_definitions(-DLINUX)
+endif (UNIX)
 
 # Proprieté de la library
 
