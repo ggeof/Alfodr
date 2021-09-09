@@ -58,15 +58,17 @@ install(TARGETS Alfodr
         EXPORT Alfodr
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/libalfodr
         RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR})
       
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/" # source directory
-        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/libalfodr"# target directory
+        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/Alfodr"# target directory
         )
 
 configure_file(Alfodr.pc.in Alfodr.pc @ONLY)
 install(FILES ${CMAKE_BINARY_DIR}/Alfodr.pc DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
+install(FILES AlfodrConfig.cmake DESTINATION lib/cmake/Alfodr)
+
+
 
 execute_process (COMMAND bash -c "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib"
     OUTPUT_VARIABLE outVar
