@@ -1,4 +1,5 @@
 #include "Tools/JSON/Pair.h"
+#include "Tools/JSON/Objet.h"
 
 using namespace Alfodr::JSON;
 
@@ -72,16 +73,13 @@ char * Pair::asString() const
     return this->valueString;
 }
 
-Objet Pair::asObjet(Objet _default) const
+Objet Pair::asObjet() const
 {
     if(type < PAIR_OBJET)
     {
-        if(_default == NULL)
-            return _Objet::newObjet();
-        else
-            return _default;
+        return JSON::NewObjet();
     }
-    return this->pairs;
+    return this->pairs; 
 }
 
 TYPE_PAIR Pair::getType() const

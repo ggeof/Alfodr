@@ -111,11 +111,12 @@ double readNumber(std::ifstream& file, char cReading)
         }
     }
     while (file.get(cReading));
+    throw ERRORReadJSONFileException();
 }
 
 Objet readObjet(std::ifstream& file)
 {
-    Objet obj = _Objet::newObjet();
+    Objet obj = NewObjet();
 
     char cReading;
     while (file.get(cReading))
@@ -233,7 +234,7 @@ void writeObjet(std::ofstream& file, Objet objet, std::string tab)
 
 void writePair(std::ofstream& file, Pair pair, std::string tab)
 {
-    file << '"' << pair.getKey() << '": ';
+    file << '"' << pair.getKey() << "\": ";
 
     switch (pair.getType())
     {
@@ -253,7 +254,7 @@ void writePair(std::ofstream& file, Pair pair, std::string tab)
             file << '"' << pair.asString()<< '"' ;
             break;
         case TYPE_PAIR::PAIR_OBJET :
-            writeObjet(file, pair.asObjet(NULL), tab + "\t");
+            writeObjet(file, pair.asObjet(), tab + "\t");
             break;
     }
 }

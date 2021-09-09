@@ -112,10 +112,9 @@ namespace Alfodr {
                     /**
                      * @brief Renvoie la valeur de la pair en std::shared_ptr<_objet>
                      * 
-                     * @param _default Valeur par default si NULL ou type non convertible en std::shared_ptr<_objet>
                      * @return int Valeur de la pair en double
                      */
-                    std::shared_ptr<_Objet> asObjet(std::shared_ptr<_Objet> _default) const;
+                    std::shared_ptr<_Objet> asObjet() const;
 
                     /**
                      * @brief Get the Type of pair
@@ -128,7 +127,7 @@ namespace Alfodr {
                     operator bool() const { return this->asBool();};
                     operator double() const { return this->asDouble();};
                     operator int() const { return this->asInt();};
-                    operator std::shared_ptr<_Objet>() const { return this->asObjet(NULL);};
+                    operator std::shared_ptr<_Objet>() const { return this->asObjet();};
 
                     /**
                      * @brief Get the Key object

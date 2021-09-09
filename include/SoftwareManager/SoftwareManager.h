@@ -16,6 +16,11 @@ namespace Alfodr {
 		static const char* SOFTWARE_NAME;
 
 		/**
+		 * @brief Chemin vers le dosier contenant les ressources de l'application
+		 */
+		static const char* FOLDER_RESSOURCE_APPLICATIONS;
+
+		/**
 		 * @brief Chemin vers le dosier contenant les ressources de l'application relatif à l'utilisateur .
 		 */
 		static const char* FOLDER_USER_APPLICATIONS;

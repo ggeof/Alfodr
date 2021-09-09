@@ -1,12 +1,8 @@
 #include "Tools/JSON/Objet.h"
 
-using namespace Alfodr::JSON;
+#include <string>
 
-std::shared_ptr<_Objet> _Objet::newObjet() 
-{
-    auto o = new _Objet();
-    return std::shared_ptr<_Objet>(o);
-}
+using namespace Alfodr::JSON;
 
 _Objet::~_Objet() 
 {
@@ -45,18 +41,12 @@ void _Objet::removePair(const char * keyPair)
     
 }
 
-_Objet::_Objet()
-{
-
-}
-
-
-std::shared_ptr<Pair> _Objet::operator[](const char * keyPair)
+std::shared_ptr<Pair> Alfodr::JSON::_Objet::getPair(const char* keyPair)
 {
     std::string str(keyPair);
-    for(size_t i = 0; i < pairs.size(); i++)
+    for (size_t i = 0; i < pairs.size(); i++)
     {
-        if(std::string(pairs[i]->getKey()) == str )
+        if (std::string(pairs[i]->getKey()) == str)
             return pairs[i];
     }
 
@@ -65,8 +55,24 @@ std::shared_ptr<Pair> _Objet::operator[](const char * keyPair)
     return newPair;
 }
 
+_Objet::_Objet()
+{
+
+}
+
+
+std::shared_ptr<Pair> _Objet::operator[](const char * keyPair)
+{
+    return this->getPair(keyPair);
+}
+
 std::vector<std::shared_ptr<Pair>> _Objet::getPairs() 
 {
     return this->pairs;
 }
-        
+
+std::shared_ptr<_Objet> Alfodr::JSON::NewObjet()
+{
+    auto o = new _Objet();
+    return std::shared_ptr<_Objet>(o);
+}

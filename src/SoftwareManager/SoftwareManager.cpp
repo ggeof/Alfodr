@@ -1,43 +1,20 @@
 #include "User/User.h"
-
-User user;
-
-
-
-
-#ifdef DEBUG
-std::cout << "### MODE DEBUG ###" << std::endl;
-std::cout << "Opencv version : " << CV_VERSION << std::endl;
-//imshow("Test", cv::Mat(10,10, uchar(0)));
-#endif
-
-#ifdef CUDA
-cv::cuda::getCudaEnabledDeviceCount();
-cv::cuda::setDevice(0);
-#endif // CUDA
-
-// On charge gtk
-XInitThreads();
-gtk_init(&argc, &argv);
-
-
-// Si on est pas placé dans le bon dossier on s'y place
-if (!experimental::filesystem::exists("./ressources"))
-chdir("/opt/caliper/");
-
-
-std::string home = std::string(getenv("HOME"));
+#include <experimental/filesystem>
 
 
 void Alfodr::SoftwareManager::initSoftwareAlfodr(const char* softwareName)
 {
-	SOFTWARE_MANAGER = softwareName;
+	SOFTWARE_NAME = softwareName;
 
 
 	std::string littleName = std::string(softwareName);
 	std::transform(littleName.begin(), littleName.end(), littleName.begin(),
 			[](unsigned char c) { return std::tolower(c); } // correct
-		);
+	);
+
+	FOLDER_RESSOURCE_APPLICATIONS = ("opt/" + littleName + "/").c_str();
+	if(!std::experimental::filesystem::exists(FOLDER_RESSOURCE_APPLICATIONS))
+		FOLDER_RESSOURCE_APPLICATIONS ="./"
 
 #ifdef LINUX
 	std::string home = std::string(getenv("HOME"));
@@ -45,5 +22,5 @@ void Alfodr::SoftwareManager::initSoftwareAlfodr(const char* softwareName)
 	system(("mkdir -p -m 776 " + std::string(FOLDER_USER_APPLICATIONS)).c_str());
 #endif // LINUX
 
-	user = User::value();
+	User user = User::value();
 }

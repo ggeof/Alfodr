@@ -3,7 +3,7 @@
 #include <cstring>
 
 Alfodr::SoftwareManager::_User::_User() :
-	Logs((std::string(FOLDER_USER_APPLICATIONS)+"/logs").c_str()), Setup((std::string(FOLDER_USER_APPLICATIONS) + "/config.json").c_str()),
+	Logs((std::string(FOLDER_USER_APPLICATIONS)+"/logs").c_str()), Setup((std::string(FOLDER_USER_APPLICATIONS) + "/config.json").c_str(), (std::string(FOLDER_RESSOURCE_APPLICATIONS) + "/config.json").c_str()),
 	levelUser(OPERATOR)
 {
 	passwords.insert(std::pair<LevelUser, char*>(UT, ""));

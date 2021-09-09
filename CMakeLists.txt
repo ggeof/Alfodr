@@ -21,8 +21,8 @@ add_library(Alfodr SHARED
                 src/Tools/CSV/Table.cpp
                 src/Tools/CSV/FileCSV.cpp
                 
-                src/Tools/JSON/Pair.cpp
                 src/Tools/JSON/Objet.cpp
+                src/Tools/JSON/Pair.cpp
                 src/Tools/JSON/JSONFile.cpp
 
                 src/Tools/Chrono/Chrono.cpp "src/SoftwareManager/User/Setup.cpp" "src/SoftwareManager/User/User.cpp" "src/SoftwareManager/User/Logs.cpp")

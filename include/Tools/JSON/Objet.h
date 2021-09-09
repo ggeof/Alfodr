@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <exception>
+#include <string>
 #include <vector>
 
 #include "Pair.h"
@@ -28,6 +29,7 @@ namespace Alfodr {
          */
         class _Objet
         {
+            friend std::shared_ptr<_Objet> NewObjet();
             /**
              * @brief Exception throw when the pair with a key already exist in the objet 
              */
@@ -59,13 +61,6 @@ namespace Alfodr {
             public :
 
                 /**
-                 * @brief Create a new Objet
-                 * 
-                 * @return std::shared_ptr<_Objet> 
-                 */
-                static std::shared_ptr<_Objet> newObjet();
-
-                /**
                  * @brief Destroy the objet object
                  * 
                  */
@@ -92,7 +87,16 @@ namespace Alfodr {
 
                 /**
                  * @brief get pair with specific key
-                 *                  * 
+                 *                  
+                 * @param keyPair key of the pair
+                 * @return std::shared_ptr<Pair> pair returned
+                 */
+                std::shared_ptr<Pair> getPair(const char* keyPair);
+                
+
+                /**
+                 * @brief get pair with specific key
+                 *                  
                  * @param keyPair key of the pair
                  * @return std::shared_ptr<Pair> pair returned
                  */
@@ -120,6 +124,7 @@ namespace Alfodr {
 
         };
         
+        std::shared_ptr<_Objet> NewObjet();
     }
 
 
