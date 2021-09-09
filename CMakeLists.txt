@@ -12,8 +12,19 @@ file(GLOB_RECURSE INCLUDES_FILES "include/*.h")
 # Listes des fichiers CPP à compiler
 add_library(Alfodr SHARED
                 ${INCLUDES_FILES}
+
                 src/Types/Interval.cpp
                 src/Types/Parameter.cpp
+
+                src/Tools/Chrono/Chrono.cpp
+                src/Tools/CSV/Column.cpp
+                src/Tools/CSV/Table.cpp
+                src/Tools/CSV/FileCSV.cpp
+                
+                src/Tools/JSON/Pair.cpp
+                src/Tools/JSON/Objet.cpp
+                src/Tools/JSON/JSONFile.cpp
+
                 src/Tools/Chrono/Chrono.cpp "src/SoftwareManager/User/Setup.cpp" "src/SoftwareManager/User/User.cpp" "src/SoftwareManager/User/Logs.cpp")
 
 
@@ -21,6 +32,8 @@ add_library(Alfodr SHARED
 if (UNIX)
     add_definitions(-DLINUX)
 endif (UNIX)
+
+
 
 # Proprieté de la library
 
