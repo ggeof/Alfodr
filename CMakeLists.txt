@@ -25,7 +25,11 @@ add_library(Alfodr SHARED
                 src/Tools/JSON/Pair.cpp
                 src/Tools/JSON/JSONFile.cpp
 
-                src/Tools/Chrono/Chrono.cpp "src/SoftwareManager/User/Setup.cpp" "src/SoftwareManager/User/User.cpp" "src/SoftwareManager/User/Logs.cpp")
+                src/Tools/Chrono/Chrono.cpp
+                
+                "src/SoftwareManager/User/Setup.cpp" "src/SoftwareManager/User/User.cpp" "src/SoftwareManager/User/Logs.cpp"
+                src/SoftwareManager/ArgumentReader.cpp
+                src/SoftwareManager/SoftwareManager.cpp)
 
 
 # Definition de compilation

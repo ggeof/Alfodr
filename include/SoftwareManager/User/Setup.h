@@ -8,23 +8,29 @@ namespace Alfodr {
 		class Setup {
 		public:
 			
-			Setup(const char* fileConfig, const char* fileDefault);
+			/**
+			 * @brief Construct a new Setup object
+			 * 
+			 * @param fileConfig Fichier de configuration actuel	
+			 * @param fileDefault Fichier par default
+			 */
+			Setup(const char* fileConfig, const char* fileDefault = "");
 
 			~Setup();
 
 			/**
-			 * @brief Récupère une collection de paramètre
+			 * @brief Rï¿½cupï¿½re une collection de paramï¿½tre
 			 *
 			 * @param nameParamters nom de la collection
-			 * @return JSON::Objet Collection de paramètre
+			 * @return JSON::Objet Collection de paramï¿½tre
 			 */
 			JSON::Objet getCollectionParameters(const char* nameCollection);
 
 			/**
-			 * @brief Récupère les paramètres grâce à son nom
+			 * @brief Rï¿½cupï¿½re les paramï¿½tres grï¿½ce ï¿½ son nom
 			 *
-			 * @param nameParamters nom du paramètre
-			 * @return std::shared_ptr<JSON::Pair> Pointeur vers la Pair lié au paramètre
+			 * @param nameParamters nom du paramï¿½tre
+			 * @return std::shared_ptr<JSON::Pair> Pointeur vers la Pair liï¿½ au paramï¿½tre
 			 */
 			std::shared_ptr<JSON::Pair> getParameters(const char* nameParamters);
 
