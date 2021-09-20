@@ -1,6 +1,8 @@
 #include "SoftwareManager/ArgumentReader.h"
 #include "SoftwareManager/SoftwareManager.h"
 #include <iostream>
+#include <cstring>
+
 
 using namespace Alfodr::SoftwareManager;
 
