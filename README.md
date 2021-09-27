@@ -24,3 +24,21 @@ This tools used for read and write different type of files
 
 * JSON
 * CSV
+
+## Installation and Use
+
+### Installation 
+
+`mkdir build`
+
+`cd ./build`
+
+`cmake ..`
+
+`sudo make install`
+
+### Use
+
+Use with g++ :
+
+`pkg-config --cflags --libs Alfodr`
