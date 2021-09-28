@@ -27,7 +27,10 @@ add_library(Alfodr SHARED
 
                 src/Tools/Chrono/Chrono.cpp
                 
-                "src/SoftwareManager/User/Setup.cpp" "src/SoftwareManager/User/User.cpp" "src/SoftwareManager/User/Logs.cpp"
+                src/SoftwareManager/User/Setup.cpp
+                #src/SoftwareManager/User/User.cpp
+                src/SoftwareManager/User/Logs.cpp
+
                 src/SoftwareManager/ArgumentReader.cpp
                 src/SoftwareManager/SoftwareManager.cpp)
 

@@ -198,7 +198,7 @@ Objet readObjet(std::ifstream& file)
 
 }
 
-Objet openJSONFile(const char * path) 
+Objet Alfodr::JSON::openJSONFile(const char * path) 
 {
     std::ifstream file = std::ifstream(path);
     std::vector<Objet> objets;
@@ -259,7 +259,7 @@ void writePair(std::ofstream& file, Pair pair, std::string tab)
     }
 }
 
-void writeJSONFile(const char * path, Objet objet) 
+void Alfodr::JSON::writeJSONFile(const char * path, Objet objet) 
 {
     std::ofstream file = std::ofstream(path);
 

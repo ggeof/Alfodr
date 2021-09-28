@@ -141,7 +141,7 @@ namespace Alfodr {
 		/**
 		 * @brief D�finition du singleton User
 		 */
-		typedef Singleton<_User> User;
+		//typedef Singleton<_User> User;
 	}
 }
 

@@ -22,5 +22,5 @@ void Alfodr::SoftwareManager::initSoftwareAlfodr(const char* softwareName)
 	system(("mkdir -p -m 776 " + std::string(FOLDER_USER_APPLICATIONS)).c_str());
 #endif // LINUX
 
-	auto user = User::value();
+	//auto user = User::value();
 }
