@@ -38,7 +38,7 @@ namespace Alfodr
 
 		Interval(T val1, T val2) {
 			min = std::min(val1, val2); 
-			max = std::min(val1, val2);
+			max = std::max(val1, val2);
 			init = true;
 		}
 

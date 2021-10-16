@@ -9,12 +9,12 @@ namespace Alfodr
 template<typename T>
 struct Rectangle
 {
-    T left;
-    T top;
-    T right;
-    T bottom;
+    T originX;
+    T originY;
+    T sizeX;
+    T sizeY;
 
-    Rectangle(T _left, T _top, T _right, T _bottom) : left(_left), top(_top), right(_right), bottom(_bottom) {}; 
+    Rectangle(T _originX, T _originY, T _sizeX, T _sizeY) : originX(_originX), originY(_originY), sizeX(_sizeX), sizeY(_sizeY) {}; 
 };
 
 } // namespace Alfodr
