@@ -36,6 +36,12 @@ namespace Alfodr
 			init = true;
 		}
 
+		/**
+		 * @brief Construct a new Interval object
+		 * 
+		 * @param val1 Value of a bounded 
+		 * @param val2 Value of the other bounded
+		 */
 		Interval(T val1, T val2) {
 			min = std::min(val1, val2); 
 			max = std::max(val1, val2);
@@ -43,28 +49,40 @@ namespace Alfodr
 		}
 
 
+		/**
+		 * @brief clear the interval 
+		 * 
+		 */
 		inline void reinit() {
 			init = false;
 		}
 
-		
+		/**
+		 * @brief Set the born of interval
+		 * 
+		 * @param val1 Value of a bounded  
+		 * @param val2 Value of the other bounded
+		 */
 		inline void set(T _val1, T _val2) {
 			min = std::min(_val1, _val2);
 			max = std::max(_val1, _val2);
 			init = true;
 		}
 
-		inline void decreaseTo(T _val) {
+	
+		inline void decreaseTo(Interval<T> interval) {
+			if(interval.init == false) throw IntervalNotInitialized();
+
 			if (init == false)
 			{
-				min = _val;
-				max = _val;
+				min = interval.min;
+				max = interval.max;
 				init = true;
 			}
 			else
 			{
-				min = std::max(min, _val);
-				max = std::min(max, _val);
+				min = std::max(min, interval.min);
+				max = std::min(max, interval.max);
 			}
 		}
 
@@ -77,17 +95,19 @@ namespace Alfodr
 				std::swap(min, max);
 		}
 
-		inline void increaseTo(T _val) {
+		inline void increaseTo(Interval<T> interval) {
+			if(interval.init == false) throw IntervalNotInitialized();
+
 			if (init == false)
 			{
-				min = _val;
-				max = _val;
+				min = interval.min;
+				max = interval.max;
 				init = true;
 			}
 			else
 			{
-				min = std::min(min, _val);
-				max = std::max(max, _val);
+				min = std::min(min, interval.min);
+				max = std::max(max, interval.max);
 			}
 		}
 
@@ -115,9 +135,24 @@ namespace Alfodr
 			return _val < min&& _val > max;
 		}
 
+		/**
+		 * @brief Return the position of a value in the interval 
+		 * 
+		 * @param value to evaluate
+		 * @return float 1 : value >= max, 0 : value <= min
+		 */
+		inline float positionInInterval(T value) const {
+			return  std::min(1.0f,	
+						float(std::max(T(0), value-min)) 
+						/
+						float(max - min)
+					);
+		}
 
 		inline T getMin() const { return this->min; }
 		inline T getMax() const { return this->max; }
+
+		inline bool isInitialized() const { return this->init; }
 
 	private:
 		bool init = false;
