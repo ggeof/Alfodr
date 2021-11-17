@@ -15,13 +15,23 @@ void _Objet::insertPair(std::shared_ptr<Pair> pair)
     std::string str(pair->getKey());
     size_t i; 
 
+
     for(i = 0; i < pairs.size(); i++)
     {
         if(std::string(pairs[i]->getKey()) == str )
-            throw PairWithKeyAlreadyExistException(str.c_str());
+        {
+            pairs[i] = pair;
+            return;
+        }
     }
 
     pairs.push_back(pair);
+}
+
+void _Objet::insertPair(Pair _pair) 
+{
+    std::shared_ptr<Pair> pair = std::make_shared<Pair>(_pair);
+    this->insertPair(pair);
 }
 
 void _Objet::removePair(const char * keyPair) 
@@ -41,6 +51,18 @@ void _Objet::removePair(const char * keyPair)
     
 }
 
+bool Alfodr::JSON::_Objet::pairExist(const char* keyPair) 
+{
+    std::string str(keyPair);
+    for (size_t i = 0; i < pairs.size(); i++)
+    {
+        if (std::string(pairs[i]->getKey()) == str)
+            return  true;
+    }
+
+    return false;   
+}
+
 std::shared_ptr<Pair> Alfodr::JSON::_Objet::getPair(const char* keyPair)
 {
     std::string str(keyPair);
@@ -57,7 +79,10 @@ std::shared_ptr<Pair> Alfodr::JSON::_Objet::getPair(const char* keyPair)
 
 _Objet::_Objet()
 {
-
+    /*
+    this->pairs.reserve(3);
+    this->pairs.push_back(std::make_shared<Pair>("T"));
+    */
 }
 
 
@@ -70,6 +95,7 @@ std::vector<std::shared_ptr<Pair>> _Objet::getPairs()
 {
     return this->pairs;
 }
+
 
 std::shared_ptr<_Objet> Alfodr::JSON::NewObjet()
 {

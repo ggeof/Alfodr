@@ -18,8 +18,9 @@ namespace Alfodr {
             PAIR_NULL = -1, 
             PAIR_STRING = 0,
             PAIR_BOOL = 1,
-            PAIR_NUMBER = 2,
-            PAIR_OBJET = 3
+            PAIR_NUMBER_D = 2,
+            PAIR_NUMBER_I = 3,
+            PAIR_OBJET = 4
         };
 
         /**
@@ -61,6 +62,14 @@ namespace Alfodr {
                  * @param key of the pair
                  * @param value value of the pair
                  */
+                Pair(const char * key, int value);
+
+                /**
+                 * @brief Construct a new Pair object of type number
+                 * 
+                 * @param key of the pair
+                 * @param value value of the pair
+                 */
                 Pair(const char * key, double value);
 
                 /**
@@ -74,7 +83,7 @@ namespace Alfodr {
                 #pragma region Accesseur
 
                     /**
-                     * @return bool Indique si la pair est n ull
+                     * @return bool Indique si la pair est null
                      */
                     bool isNull() const;
 
@@ -84,7 +93,7 @@ namespace Alfodr {
                      * @param _default Valeur par default si NULL ou type non convertible en boolean
                      * @return bool Valeur de la pair en bool
                      */
-                    bool asBool(bool _default = false) const;
+                    bool asBool(bool _default = false);
 
                     /**
                      * @brief Renvoie la valeur de la pair en int
@@ -92,7 +101,7 @@ namespace Alfodr {
                      * @param _default Valeur par default si NULL ou type non convertible en int
                      * @return int Valeur de la pair en int
                      */
-                    int asInt(int _default = 0) const;
+                    int asInt(int _default = 0);
 
                     /**
                      * @brief Renvoie la valeur de la pair en double
@@ -100,21 +109,22 @@ namespace Alfodr {
                      * @param _default Valeur par default si NULL ou type non convertible en double
                      * @return double Valeur de la pair en double
                      */
-                    double asDouble(double _default = 0.0) const;
+                    double asDouble(double _default = 0.0);
 
                     /**
                      * @brief Renvoie la valeur de la pair en char *
                      * 
                      * @return char* Valeur de la pair en char *
                      */
-                    char * asString() const;
+                    const char * asString();
+
 
                     /**
                      * @brief Renvoie la valeur de la pair en std::shared_ptr<_objet>
                      * 
                      * @return int Valeur de la pair en double
                      */
-                    std::shared_ptr<_Objet> asObjet() const;
+                    std::shared_ptr<_Objet> asObjet();
 
                     /**
                      * @brief Get the Type of pair
@@ -123,11 +133,11 @@ namespace Alfodr {
                      */
                     TYPE_PAIR getType() const;
 
-                    operator char *() const { return this->asString();};
-                    operator bool() const { return this->asBool();};
-                    operator double() const { return this->asDouble();};
-                    operator int() const { return this->asInt();};
-                    operator std::shared_ptr<_Objet>() const { return this->asObjet();};
+                    operator char *()  { return (char *)this->asString();};
+                    operator bool()  { return this->asBool();};
+                    operator double() { return this->asDouble();};
+                    operator int()  { return this->asInt();};
+                    operator std::shared_ptr<_Objet>() { return this->asObjet();};
 
                     /**
                      * @brief Get the Key object
@@ -138,6 +148,13 @@ namespace Alfodr {
                 #pragma endregion
 
                 #pragma region Mutateur
+                    /**
+                     * @brief Set the value of the pair with a number
+                     * 
+                     * @param newValue Nouvelle valeur en int
+                     */
+                    void setValue(int newValue);
+
                     /**
                      * @brief Set the value of the pair with a number
                      * 
@@ -174,7 +191,7 @@ namespace Alfodr {
                     void operator=(char * value)  { this->setValue(value);};
                     void operator=(bool value) { this->setValue(value);};
                     void operator=(double value) { this->setValue(value);};
-                    void operator=(int value) { this->setValue((double)value);};
+                    void operator=(int value) { this->setValue(value);};
                     void operator=(std::shared_ptr<_Objet> value) { this->setValue(value);};
 
 
@@ -186,7 +203,7 @@ namespace Alfodr {
                  * @brief Key of the pair
                  * 
                  */
-                const char * key;
+                char key[255];
 
                 /**
                  * @brief Type of the pair

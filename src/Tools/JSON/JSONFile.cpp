@@ -4,19 +4,22 @@
 #include <vector>
 #include <math.h>
 
+#include <iostream>
+
 using namespace Alfodr::JSON;
 
 void readCharNoEspace(std::ifstream& file, char c)
 {
     std::string reading = "";
-
+    
     char cReading;
     while (file.get(cReading))
     {
         if(' ' == cReading || '\n' == cReading || '\t' == cReading )
             continue;
-        if(cReading == c)
+        else if(cReading == c)
             return;
+        
         throw ERRORReadJSONFileException();
     }
 
@@ -25,13 +28,18 @@ void readCharNoEspace(std::ifstream& file, char c)
 std::string readUntilChar(std::ifstream& file, char c)
 {
     std::string reading = "";
+    bool passed = false;
 
     char cReading;
     while (file.get(cReading))
     {
-        if(cReading == c)
+        if(cReading == '\\')
+            passed = true;
+        else if(cReading == c && passed == false)
             return reading;
-        reading += cReading;
+        else
+            passed = false;
+        reading.push_back(cReading);
     }
 
     throw ERRORReadJSONFileException();
@@ -55,6 +63,7 @@ double readNumber(std::ifstream& file, char cReading)
         switch (cReading)
         {
             case '}':
+                file.unget();
             case ',':
                 return negatif ? -value : value;
             case '0':
@@ -111,26 +120,29 @@ double readNumber(std::ifstream& file, char cReading)
         }
     }
     while (file.get(cReading));
+
     throw ERRORReadJSONFileException();
 }
 
+
+
 Objet readObjet(std::ifstream& file)
 {
+    char cReading;
     Objet obj = NewObjet();
 
-    char cReading;
     while (file.get(cReading))
     {
-        if(' ' == cReading || '\n' == cReading || '\t' == cReading )
+        if(' ' == cReading || '\n' == cReading || '\t' == cReading || ',' == cReading )
             continue;
-        else if('}' == cReading)
-        {
+        else if(cReading == '}' )
             return obj;
-        }
         else if('"' == cReading)
         {
-            std::shared_ptr<Alfodr::JSON::Pair> newPair(new Pair(readUntilChar(file, '"').c_str()));
-            readCharNoEspace(file, '=');
+            std::string namePair = readUntilChar(file, '"');
+            readCharNoEspace(file, ':');
+
+            std::cout << "Nom Pair : " << namePair << std::endl;
 
             while (file.get(cReading))
             {
@@ -138,8 +150,9 @@ Objet readObjet(std::ifstream& file)
                     continue;
                 break;
             }
+
+            Pair pair(namePair.c_str());
             TYPE_PAIR typePair;
-            std::shared_ptr<Alfodr::JSON::Pair> pair = nullptr;
             switch (cReading)
             {
                 case '-':
@@ -154,20 +167,21 @@ Objet readObjet(std::ifstream& file)
                 case '8':
                 case '9':
                 case '.':
-                    pair->setValue(readNumber(file, cReading));
+                    pair.setValue(readNumber(file, cReading));
                     break;
                 case '"':
-                    pair->setValue(readUntilChar(file, '"').c_str());
+                    pair.setValue(readUntilChar(file, '"').c_str());
+                    pair.setValue(true);
                     break;
                 case '{':
-                    pair->setValue(readObjet(file));
+                    pair.setValue(readObjet(file));
                     break;
                 case 't':
                 case 'T':
                     file.get(cReading); if(cReading != 'R' && cReading != 'r') throw ERRORReadJSONFileException();
                     file.get(cReading); if(cReading != 'U' && cReading != 'u') throw ERRORReadJSONFileException();
                     file.get(cReading); if(cReading != 'E' && cReading != 'e') throw ERRORReadJSONFileException();
-                    pair->setValue(true);
+                    pair.setValue(true);
                     break;
                 case 'f':
                 case 'F':
@@ -175,7 +189,7 @@ Objet readObjet(std::ifstream& file)
                     file.get(cReading); if(cReading != 'L' && cReading != 'l') throw ERRORReadJSONFileException();
                     file.get(cReading); if(cReading != 'S' && cReading != 's') throw ERRORReadJSONFileException();
                     file.get(cReading); if(cReading != 'E' && cReading != 'e') throw ERRORReadJSONFileException();
-                    pair->setValue(false);
+                    pair.setValue(false);
                     break;
                 case 'n':
                 case 'N':
@@ -186,8 +200,10 @@ Objet readObjet(std::ifstream& file)
                 default:
                     throw ERRORReadJSONFileException();
             }
-            readCharNoEspace(file, ',');
 
+            
+            std::cout << "Pair Crée -> " << pair.getKey() << std::endl;
+            
             obj->insertPair(pair);
         }
         else
@@ -203,9 +219,12 @@ Objet Alfodr::JSON::openJSONFile(const char * path)
     std::ifstream file = std::ifstream(path);
     std::vector<Objet> objets;
 
+        std::cout << path << std::endl;
     readCharNoEspace(file, '{');
 
+    char c = '{';
     Objet root =  readObjet(file);
+    std::cout << "End !\n";
     file.close();
     return root;
 }
@@ -218,16 +237,19 @@ void writeObjet(std::ofstream& file, Objet objet, std::string tab)
 
     std::vector<std::shared_ptr<Pair>> pairs = objet->getPairs();
 
+    std::string newtab = tab + "\t";
+
     for(size_t i = 0; i < pairs.size(); i++)
     {
-        file << tab;
-        writePair(file, *(pairs[i].get()), tab);
+        file << newtab;
+        writePair(file, *(pairs[i].get()), newtab);
 
         if(i != pairs.size()-1)
             file << ",";
         file << "\n";
     }
 
+    file << tab;
     file << "}";
 }
 
@@ -241,7 +263,10 @@ void writePair(std::ofstream& file, Pair pair, std::string tab)
         case TYPE_PAIR::PAIR_NULL :
             file << "null";
             break;
-        case TYPE_PAIR::PAIR_NUMBER :
+        case TYPE_PAIR::PAIR_NUMBER_I :
+            file << pair.asInt();
+            break;
+        case TYPE_PAIR::PAIR_NUMBER_D :
             file << pair.asDouble();
             break;
         case TYPE_PAIR::PAIR_BOOL :
@@ -254,7 +279,7 @@ void writePair(std::ofstream& file, Pair pair, std::string tab)
             file << '"' << pair.asString()<< '"' ;
             break;
         case TYPE_PAIR::PAIR_OBJET :
-            writeObjet(file, pair.asObjet(), tab + "\t");
+            writeObjet(file, pair.asObjet(), tab);
             break;
     }
 }
@@ -265,7 +290,7 @@ void Alfodr::JSON::writeJSONFile(const char * path, Objet objet)
 
 
 
-    writeObjet(file, objet, "\t");
+    writeObjet(file, objet, "");
 
     file.close();
 }
