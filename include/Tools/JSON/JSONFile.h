@@ -19,6 +19,8 @@ namespace Alfodr {
         /**
          * @brief Open a JSON file and return this structure
          * 
+         * @warning the exception @ref ERRORReadJSONFileException can be throw 
+         * 
          * @param path to the file
          * @return Objet Structure of the JSON file
          */

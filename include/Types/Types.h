@@ -31,7 +31,7 @@ namespace Alfodr
 			 * 
 			 * @param args Argument optionnal
 			 */
-			Singleton(void* args = nullptr) { if(single == nullptr) single=std::make_shared<T>(args); } 
+			Singleton(void* args = nullptr) { if(single == nullptr) single=std::shared_ptr<T>(new T(args)); } 
 
 			/**
 			 * @brief Récupère l'objet simple T
@@ -42,7 +42,7 @@ namespace Alfodr
 	
 		private:
 
-			static std::shared_ptr<T> single = nullptr;
+			static std::shared_ptr<T> single;
 	};
 }
 

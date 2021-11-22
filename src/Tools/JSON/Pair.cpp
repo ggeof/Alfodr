@@ -1,36 +1,45 @@
 #include "Tools/JSON/Pair.h"
+#include "Tools/JSON/Objet.h"
 
 using namespace Alfodr::JSON;
 
+#include <stdio.h>
+#include <string.h>
 
 Pair::Pair(const char * _key) :
-    key(_key), type(TYPE_PAIR::PAIR_NULL)
+    type(TYPE_PAIR::PAIR_NULL)
 {
-    
+    strcpy(this->key, _key);
 }
 
 Pair::Pair(const char * _key, char * _valueString) :
-    key(_key), type(TYPE_PAIR::PAIR_STRING), valueString(_valueString)
+    type(TYPE_PAIR::PAIR_STRING), valueString(_valueString)
 {
-    
+    strcpy(this->key, _key);
 }
 
 Pair::Pair(const char * _key, Objet _pairs) :
-    key(_key), type(TYPE_PAIR::PAIR_OBJET), pairs(_pairs)
+    type(TYPE_PAIR::PAIR_OBJET), pairs(_pairs)
 {
-    
+    strcpy(this->key, _key);
+}
+
+Pair::Pair(const char * _key, int _value)  :
+    type(TYPE_PAIR::PAIR_NUMBER_I), valueDouble(_value)
+{
+    strcpy(this->key, _key);
 }
 
 Pair::Pair(const char * _key, double _value)  :
-    key(_key), type(TYPE_PAIR::PAIR_NUMBER), valueDouble(_value)
+    type(TYPE_PAIR::PAIR_NUMBER_D), valueDouble(_value)
 {
-    
+    strcpy(this->key, _key);
 }
 
 Pair::Pair(const char * _key, bool _value) :
-    key(_key), type(TYPE_PAIR::PAIR_BOOL), valueDouble(_value)
+    type(TYPE_PAIR::PAIR_BOOL), valueDouble(_value)
 {
-
+    strcpy(this->key, _key);
 }
 
 const char * Pair::getKey() const
@@ -44,44 +53,59 @@ bool Pair::isNull() const
     return type == PAIR_NULL;
 }
 
-bool Pair::asBool(bool _default) const
+bool Pair::asBool(bool _default)
 {
     if(type < PAIR_BOOL)
-        return _default;
+        this->setValue(_default);
     return bool(this->valueDouble);
 }
 
-int Pair::asInt(int _default) const
+int Pair::asInt(int _default)
 {
     if(type < PAIR_BOOL)
-        return _default;
+        this->setValue((double)_default);
     return int(this->valueDouble);
 }
 
-double Pair::asDouble(double _default) const
+double Pair::asDouble(double _default)
 {
     if(type < PAIR_BOOL)
-        return _default;
+        this->setValue(_default);
     return double(this->valueDouble);   
 }
 
-char * Pair::asString() const
+#include <string>
+
+const char * Pair::asString()
 {
-    if(type < PAIR_STRING)
-        return "null";
-    return this->valueString;
+    switch (this->type)
+    {
+        case TYPE_PAIR::PAIR_NULL:
+            return "NULL";
+        case TYPE_PAIR::PAIR_STRING:
+            return valueString;
+        case TYPE_PAIR::PAIR_BOOL:
+            if(this->valueDouble == 1)
+                return "True";
+            else
+                return "False";
+        case TYPE_PAIR::PAIR_NUMBER_I :
+            return std::to_string((int)this->valueDouble).c_str();
+        case TYPE_PAIR::PAIR_NUMBER_D :
+            return std::to_string((double)this->valueDouble).c_str();
+        case TYPE_PAIR::PAIR_OBJET :
+            return "Objet";
+    }
+    return "";
 }
 
-Objet Pair::asObjet(Objet _default) const
+Objet Pair::asObjet()
 {
     if(type < PAIR_OBJET)
     {
-        if(_default == NULL)
-            return _Objet::newObjet();
-        else
-            return _default;
+        this->setValue(JSON::NewObjet());
     }
-    return this->pairs;
+    return this->pairs; 
 }
 
 TYPE_PAIR Pair::getType() const
@@ -89,9 +113,15 @@ TYPE_PAIR Pair::getType() const
     return this->type;
 }
 
+void Pair::setValue(int newValue) 
+{
+    this->type = PAIR_NUMBER_I;
+    this->valueDouble = newValue;
+}
+
 void Pair::setValue(double newValue) 
 {
-    this->type = PAIR_NUMBER;
+    this->type = PAIR_NUMBER_D;
     this->valueDouble = newValue;
 }
 

@@ -21,11 +21,24 @@ add_library(Alfodr SHARED
                 src/Tools/CSV/Table.cpp
                 src/Tools/CSV/FileCSV.cpp
                 
-                src/Tools/JSON/Pair.cpp
                 src/Tools/JSON/Objet.cpp
+                src/Tools/JSON/Pair.cpp
                 src/Tools/JSON/JSONFile.cpp
 
-                )
+                src/Tools/Chrono/Chrono.cpp
+                
+                src/SoftwareManager/User/Setup.cpp
+                #src/SoftwareManager/User/User.cpp
+                src/SoftwareManager/User/Logs.cpp
+
+                src/SoftwareManager/ArgumentReader.cpp
+                src/SoftwareManager/SoftwareManager.cpp)
+
+
+# Definition de compilation
+if (UNIX)
+    add_definitions(-DLINUX)
+endif (UNIX)
 
 
 
@@ -58,6 +71,7 @@ install(TARGETS Alfodr
         EXPORT Alfodr
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Alfodr
         RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR})
       
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/" # source directory
@@ -66,9 +80,6 @@ install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/" # source directory
 
 configure_file(Alfodr.pc.in Alfodr.pc @ONLY)
 install(FILES ${CMAKE_BINARY_DIR}/Alfodr.pc DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
-install(FILES AlfodrConfig.cmake DESTINATION lib/cmake/Alfodr)
-
-
 
 execute_process (COMMAND bash -c "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib"
     OUTPUT_VARIABLE outVar

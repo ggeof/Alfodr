@@ -3,7 +3,9 @@
 
 #include <memory>
 #include <exception>
+#include <string>
 #include <vector>
+
 
 #include "Pair.h"
 
@@ -21,13 +23,14 @@ namespace Alfodr {
          */
         typedef std::shared_ptr<_Objet> Objet;
 
-
         /**
          * @brief Class objet qui ne peut pas être initialisé car un objet ne peut être un pointeur de type std::shared_ptr
          * 
          */
         class _Objet
         {
+            friend std::shared_ptr<_Objet> NewObjet();
+            
             /**
              * @brief Exception throw when the pair with a key already exist in the objet 
              */
@@ -59,17 +62,19 @@ namespace Alfodr {
             public :
 
                 /**
-                 * @brief Create a new Objet
-                 * 
-                 * @return std::shared_ptr<_Objet> 
-                 */
-                static std::shared_ptr<_Objet> newObjet();
-
-                /**
                  * @brief Destroy the objet object
                  * 
                  */
                 ~_Objet();
+
+                /**
+                 * @brief Insert a new pair in the objet
+                 * 
+                 * @warning can be return exception : @ref PairWithKeyAlreadyExistException
+                 * 
+                 * @param pair new pair who must to be insered
+                 */
+                void insertPair(Pair pair);
 
                 /**
                  * @brief Insert a new pair in the objet
@@ -91,8 +96,25 @@ namespace Alfodr {
                 void removePair(const char * keyPair);
 
                 /**
+                 * @brief Inidcate if a pair exist in the objet
+                 * 
+                 * @param keyPair key of the pair
+                 * @return true the pair exist
+                 * @return false the pair don't exist
+                 */
+                bool pairExist(const char* keyPair);
+
+                /**
+                 * @brief get pair with specific key, if pair don't exist a pair is created
+                 *                  
+                 * @param keyPair key of the pair
+                 * @return std::shared_ptr<Pair> pair returned
+                 */
+                std::shared_ptr<Pair> getPair(const char* keyPair);
+
+                /**
                  * @brief get pair with specific key
-                 *                  * 
+                 *                  
                  * @param keyPair key of the pair
                  * @return std::shared_ptr<Pair> pair returned
                  */
@@ -120,6 +142,8 @@ namespace Alfodr {
 
         };
         
+        std::shared_ptr<_Objet> NewObjet();
+
     }
 
 
