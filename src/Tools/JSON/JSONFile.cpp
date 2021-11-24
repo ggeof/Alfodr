@@ -156,7 +156,6 @@ Value readValue(std::ifstream& file)
             break;
         case '"':
             value.setValue(readUntilChar(file, '"').c_str());
-            value.setValue(true);
             break;
         case '{':
             value.setValue(readObjet(file));
@@ -166,7 +165,6 @@ Value readValue(std::ifstream& file)
             while(true)
             {
                 value.append(readValue(file));
-
 
                 while (file.get(cReading))
                 {
@@ -310,11 +308,11 @@ void writeValue(std::ofstream& file, Value value, std::string tab)
         for (size_t i = 0; i < values.size(); i++)
         {
             file << newtab;
-            writeValue(file, values, newtab);
+            writeValue(file, values[i], newtab);
             if (i < values.size() - 1)
                 file << ",\n";
         }
-        file << tab << "]\n";
+        file << "]";
 
         break;
     }

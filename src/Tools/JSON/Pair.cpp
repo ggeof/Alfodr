@@ -13,12 +13,12 @@ Alfodr::JSON::Pair::Pair(const char* _key, Value _value) :
 }
 
 Pair::Pair(const char * _key) :
-    Value(TYPE_VALUE::VALUE_NULL)
+    Value()
 {
     strcpy(this->key, _key);
 }
 
-Pair::Pair(const char * _key, char * _valueString) :
+Pair::Pair(const char * _key, const char * _valueString) :
     Value(_valueString)
 {
     strcpy(this->key, _key);

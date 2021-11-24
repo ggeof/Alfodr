@@ -3,6 +3,7 @@
 
 #include "Objet.h"
 
+#include <string>
 
 namespace Alfodr {
     namespace JSON {
@@ -44,7 +45,14 @@ namespace Alfodr {
              *
              * @param valueString value in string
              */
-            Value(char* valueString);
+            Value(std::string valueString);
+
+            /**
+             * @brief Construct a new Value object of type string
+             *
+             * @param valueString value in string
+             */
+            Value(const char* valueString);
 
             /**
              * @brief Construct a new Value object of type std::shared_ptr<_objet>
@@ -140,7 +148,7 @@ namespace Alfodr {
              */
             TYPE_VALUE getType() const;
 
-            operator char* () { return (char*)this->asString(); };
+            operator const char* () { return this->asString(); };
             operator bool() { return this->asBool(); };
             operator double() { return this->asDouble(); };
             operator int() { return this->asInt(); };
@@ -152,7 +160,7 @@ namespace Alfodr {
             /**
              * @brief Set the value of the pair with NULL
              */
-            void setValue();
+            void setNullValue();
 
             /**
              * @brief Set the value of the pair with a number
@@ -173,7 +181,14 @@ namespace Alfodr {
              *
              * @param newValue Nouvelle valeur en string
              */
-            void setValue(char* newValue);
+            void setValue(const char* newValue);
+
+            /**
+             * @brief Set the value of the pair with a string
+             *
+             * @param newValue Nouvelle valeur en string
+             */
+            void setValue(std::string newValue);
 
             /**
              * @brief Set the value of the pair with a boolean
@@ -196,7 +211,8 @@ namespace Alfodr {
              */
             void setValue(std::vector<Value> newValue);
 
-            void operator=(char* value) { this->setValue(value); };
+            void operator=(const char* value) { this->setValue(value); };
+            void operator=(std::string value) { this->setValue(value); };
             void operator=(bool value) { this->setValue(value); };
             void operator=(double value) { this->setValue(value); };
             void operator=(int value) { this->setValue(value); };
@@ -216,7 +232,7 @@ namespace Alfodr {
             /**
              * @brief Type of the pair
              */
-            TYPE_VALUE type;
+            TYPE_VALUE type = VALUE_NULL;
 
             /**
              * @brief Value in double
@@ -226,7 +242,7 @@ namespace Alfodr {
             /**
              * @brief Value string of the pair
              */
-            char* valueString = NULL;
+            std::string valueString = "";
 
             /**
              * @brief std::shared_ptr<_Objet> containing by the pair

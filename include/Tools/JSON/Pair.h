@@ -39,7 +39,15 @@ namespace Alfodr {
                  * @param key of the pair
                  * @param valueString value
                  */
-                Pair(const char * key, char * valueString);
+                Pair(const char * key, const char * valueString);
+
+                /**
+                 * @brief Construct a new Pair object of type string
+                 * 
+                 * @param key of the pair
+                 * @param valueString value
+                 */
+                Pair(const char * key, std::string valueString);
 
                 /**
                  * @brief Construct a new Pair object of type std::shared_ptr<_objet>

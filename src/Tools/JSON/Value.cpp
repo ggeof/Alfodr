@@ -9,7 +9,12 @@ Value::Value() :
     
 }
 
-Value::Value(char * _valueString) :
+Alfodr::JSON::Value::Value(std::string _valueString) :
+    type(TYPE_VALUE::VALUE_STRING), valueString(_valueString)
+{
+}
+
+Value::Value(const char * _valueString) :
     type(TYPE_VALUE::VALUE_STRING), valueString(_valueString)
 {
     
@@ -73,8 +78,6 @@ double Value::asDouble(double _default)
     return double(this->valueDouble);   
 }
 
-#include <string>
-
 const char * Value::asString()
 {
     switch (this->type)
@@ -82,7 +85,7 @@ const char * Value::asString()
         case TYPE_VALUE::VALUE_NULL:
             return "NULL";
         case TYPE_VALUE::VALUE_STRING:
-            return valueString;
+            return valueString.c_str();
         case TYPE_VALUE::VALUE_BOOL:
             if(this->valueDouble == 1)
                 return "True";
@@ -113,7 +116,7 @@ std::vector<Value> Alfodr::JSON::Value::asTable()
 {
     if (type < VALUE_TABLE)
     {
-        this->setValue(std::vector<Value>({ this }));
+        return std::vector<Value>();
     }
     return this->valueTable;
 }
@@ -160,13 +163,19 @@ void Alfodr::JSON::Value::append(Value value)
     this->valueTable.push_back(value);
 }
 
-void Value::setValue(char * newValue) 
+void Value::setValue(const char * newValue) 
+{
+    this->type = VALUE_STRING;
+    this->valueString = std::string(newValue);
+}
+
+void Value::setValue(std::string newValue) 
 {
     this->type = VALUE_STRING;
     this->valueString = newValue;
 }
 
-void Value::setValue() 
+void Value::setNullValue()
 {
     this->type = VALUE_NULL;
 }
