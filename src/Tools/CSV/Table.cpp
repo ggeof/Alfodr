@@ -72,7 +72,6 @@ void Table::addLine(int nbArgs, ...)
     }
     for(i = i; i < this->columns.size(); i++)
     {
-        std::cout << "T - " << i << std::endl;
         this->columns[i].addElement("--");
     }
 
