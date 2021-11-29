@@ -162,8 +162,19 @@ Value readValue(std::ifstream& file)
             break;
         case '[':
             value.asTable();
+
+            while (file.get(cReading))
+            {
+                if (' ' == cReading || '\n' == cReading || '\t' == cReading)
+                    continue;
+                break;
+            }
+            if (']' == cReading)
+                break;
+
             while(true)
             {
+
                 value.append(readValue(file));
 
                 while (file.get(cReading))
@@ -172,11 +183,12 @@ Value readValue(std::ifstream& file)
                         continue;
                     break;
                 }
-
                 if (',' == cReading)
                     continue;
                 else if (']' == cReading)
                     break;
+                else
+                    throw ERRORReadJSONFileException();
             }
 
 
@@ -244,7 +256,6 @@ Objet Alfodr::JSON::openJSONFile(const char * path)
 
     readCharNoEspace(file, '{');
 
-    char c = '{';
     Objet root =  readObjet(file);
 
     file.close();
@@ -305,12 +316,15 @@ void writeValue(std::ofstream& file, Value value, std::string tab)
         std::vector<Value> values = value.asTable();
         std::string newtab = tab + "\t";
         file << "[\n";
+        file << newtab;
         for (size_t i = 0; i < values.size(); i++)
         {
-            file << newtab;
             writeValue(file, values[i], newtab);
             if (i < values.size() - 1)
+            {
                 file << ",\n";
+                file << newtab;
+            }
         }
         file << "]";
 
