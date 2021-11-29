@@ -23,6 +23,7 @@ add_library(Alfodr SHARED
                 
                 src/Tools/JSON/Objet.cpp
                 src/Tools/JSON/Pair.cpp
+                src/Tools/JSON/Value.cpp
                 src/Tools/JSON/JSONFile.cpp
 
                 src/Tools/Chrono/Chrono.cpp
