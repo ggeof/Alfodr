@@ -142,8 +142,6 @@ Objet readObjet(std::ifstream& file)
             std::string namePair = readUntilChar(file, '"');
             readCharNoEspace(file, ':');
 
-            std::cout << "Nom Pair : " << namePair << std::endl;
-
             while (file.get(cReading))
             {
                 if(' ' == cReading || '\n' == cReading || '\t' == cReading )
@@ -200,9 +198,6 @@ Objet readObjet(std::ifstream& file)
                 default:
                     throw ERRORReadJSONFileException();
             }
-
-            
-            std::cout << "Pair Crée -> " << pair.getKey() << std::endl;
             
             obj->insertPair(pair);
         }
