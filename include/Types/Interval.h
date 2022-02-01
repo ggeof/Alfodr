@@ -164,7 +164,7 @@ namespace Alfodr
 				this->set(_val, _val);
 				return;
 			}
-			max = std::min(min, _val);
+			max = std::max(min, _val);
 		}
 
 		inline T getMin() const { return this->min; }
