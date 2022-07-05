@@ -149,6 +149,26 @@ namespace Alfodr
 					);
 		}
 
+		inline void setMin(T _val) {
+			if (init == false)
+			{
+				this->set(_val, _val);
+				return;
+			}
+			min = _val;
+			max = std::max(max, _val);
+		}
+
+		inline void setMax(T _val) {
+			if (init == false)
+			{
+				this->set(_val, _val);
+				return;
+			}
+			max = _val;
+			min = std::min(min, _val);
+		}
+
 		inline T getMin() const { return this->min; }
 		inline T getMax() const { return this->max; }
 

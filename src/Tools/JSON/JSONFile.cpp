@@ -124,7 +124,102 @@ double readNumber(std::ifstream& file, char cReading)
     throw ERRORReadJSONFileException();
 }
 
+Objet readObjet(std::ifstream& file);
 
+Value readValue(std::ifstream& file)
+{
+    char cReading;
+    while (file.get(cReading))
+    {
+        if (' ' == cReading || '\n' == cReading || '\t' == cReading)
+            continue;
+        break;
+    }
+    
+
+    Value value = Value();
+    switch (cReading)
+    {
+        case '-':
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+        case '.':
+            value.setValue(readNumber(file, cReading));
+            break;
+        case '"':
+            value.setValue(readUntilChar(file, '"').c_str());
+            break;
+        case '{':
+            value.setValue(readObjet(file));
+            break;
+        case '[':
+            value.asTable();
+
+            while (file.get(cReading))
+            {
+                if (' ' == cReading || '\n' == cReading || '\t' == cReading)
+                    continue;
+                break;
+            }
+            if (']' == cReading)
+                break;
+
+            while(true)
+            {
+
+                value.append(readValue(file));
+
+                while (file.get(cReading))
+                {
+                    if (' ' == cReading || '\n' == cReading || '\t' == cReading)
+                        continue;
+                    break;
+                }
+                if (',' == cReading)
+                    continue;
+                else if (']' == cReading)
+                    break;
+                else
+                    throw ERRORReadJSONFileException();
+            }
+
+
+            break;
+        case 't':
+        case 'T':
+            file.get(cReading); if (cReading != 'R' && cReading != 'r') throw ERRORReadJSONFileException();
+            file.get(cReading); if (cReading != 'U' && cReading != 'u') throw ERRORReadJSONFileException();
+            file.get(cReading); if (cReading != 'E' && cReading != 'e') throw ERRORReadJSONFileException();
+            value.setValue(true);
+            break;
+        case 'f':
+        case 'F':
+            file.get(cReading); if (cReading != 'A' && cReading != 'a') throw ERRORReadJSONFileException();
+            file.get(cReading); if (cReading != 'L' && cReading != 'l') throw ERRORReadJSONFileException();
+            file.get(cReading); if (cReading != 'S' && cReading != 's') throw ERRORReadJSONFileException();
+            file.get(cReading); if (cReading != 'E' && cReading != 'e') throw ERRORReadJSONFileException();
+            value.setValue(false);
+            break;
+        case 'n':
+        case 'N':
+            file.get(cReading); if (cReading != 'U' && cReading != 'u') throw ERRORReadJSONFileException();
+            file.get(cReading); if (cReading != 'L' && cReading != 'l') throw ERRORReadJSONFileException();
+            file.get(cReading); if (cReading != 'L' && cReading != 'l') throw ERRORReadJSONFileException();
+            break;
+        default:
+            throw ERRORReadJSONFileException();
+    }
+
+    return value;
+}
 
 Objet readObjet(std::ifstream& file)
 {
@@ -133,78 +228,18 @@ Objet readObjet(std::ifstream& file)
 
     while (file.get(cReading))
     {
+        // Read nom pair
         if(' ' == cReading || '\n' == cReading || '\t' == cReading || ',' == cReading )
             continue;
         else if(cReading == '}' )
             return obj;
-        else if('"' == cReading)
+        else if('"' == cReading || '\'' == cReading)
         {
-            std::string namePair = readUntilChar(file, '"');
+            std::string namePair = readUntilChar(file, cReading);
             readCharNoEspace(file, ':');
 
-            std::cout << "Nom Pair : " << namePair << std::endl;
-
-            while (file.get(cReading))
-            {
-                if(' ' == cReading || '\n' == cReading || '\t' == cReading )
-                    continue;
-                break;
-            }
-
-            Pair pair(namePair.c_str());
-            TYPE_PAIR typePair;
-            switch (cReading)
-            {
-                case '-':
-                case '0':
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                case '8':
-                case '9':
-                case '.':
-                    pair.setValue(readNumber(file, cReading));
-                    break;
-                case '"':
-                    pair.setValue(readUntilChar(file, '"').c_str());
-                    pair.setValue(true);
-                    break;
-                case '{':
-                    pair.setValue(readObjet(file));
-                    break;
-                case 't':
-                case 'T':
-                    file.get(cReading); if(cReading != 'R' && cReading != 'r') throw ERRORReadJSONFileException();
-                    file.get(cReading); if(cReading != 'U' && cReading != 'u') throw ERRORReadJSONFileException();
-                    file.get(cReading); if(cReading != 'E' && cReading != 'e') throw ERRORReadJSONFileException();
-                    pair.setValue(true);
-                    break;
-                case 'f':
-                case 'F':
-                    file.get(cReading); if(cReading != 'A' && cReading != 'a') throw ERRORReadJSONFileException();
-                    file.get(cReading); if(cReading != 'L' && cReading != 'l') throw ERRORReadJSONFileException();
-                    file.get(cReading); if(cReading != 'S' && cReading != 's') throw ERRORReadJSONFileException();
-                    file.get(cReading); if(cReading != 'E' && cReading != 'e') throw ERRORReadJSONFileException();
-                    pair.setValue(false);
-                    break;
-                case 'n':
-                case 'N':
-                    file.get(cReading); if(cReading != 'U' && cReading != 'u') throw ERRORReadJSONFileException();
-                    file.get(cReading); if(cReading != 'L' && cReading != 'l') throw ERRORReadJSONFileException();
-                    file.get(cReading); if(cReading != 'L' && cReading != 'l') throw ERRORReadJSONFileException();
-                    break;
-                default:
-                    throw ERRORReadJSONFileException();
-            }
-
             
-            std::cout << "Pair Crée -> " << pair.getKey() << std::endl;
-            
-            obj->insertPair(pair);
+            obj->insertPair(Pair(namePair.c_str(), readValue(file)));
         }
         else
             break;
@@ -219,17 +254,16 @@ Objet Alfodr::JSON::openJSONFile(const char * path)
     std::ifstream file = std::ifstream(path);
     std::vector<Objet> objets;
 
-        std::cout << path << std::endl;
     readCharNoEspace(file, '{');
 
-    char c = '{';
     Objet root =  readObjet(file);
-    std::cout << "End !\n";
+
     file.close();
     return root;
 }
 
 void writePair(std::ofstream& file, Pair pair, std::string tab);
+
 
 void writeObjet(std::ofstream& file, Objet objet, std::string tab)
 {
@@ -253,35 +287,55 @@ void writeObjet(std::ofstream& file, Objet objet, std::string tab)
     file << "}";
 }
 
+void writeValue(std::ofstream& file, Value value, std::string tab)
+{
+    switch (value.getType())
+    {
+    case TYPE_VALUE::VALUE_NULL:
+        file << "null";
+        break;
+    case TYPE_VALUE::VALUE_NUMBER_I:
+        file << value.asInt();
+        break;
+    case TYPE_VALUE::VALUE_NUMBER_D:
+        file << value.asDouble();
+        break;
+    case TYPE_VALUE::VALUE_BOOL:
+        if (value.asBool())
+            file << "true";
+        else
+            file << "false";
+        break;
+    case TYPE_VALUE::VALUE_STRING:
+        file << '"' << value.asString() << '"';
+        break;
+    case TYPE_VALUE::VALUE_OBJET:
+        writeObjet(file, value.asObjet(), tab);
+        break;
+    case TYPE_VALUE::VALUE_TABLE:
+        std::vector<Value> values = value.asTable();
+        std::string newtab = tab + "\t";
+        file << "[\n";
+        file << newtab;
+        for (size_t i = 0; i < values.size(); i++)
+        {
+            writeValue(file, values[i], newtab);
+            if (i < values.size() - 1)
+            {
+                file << ",\n";
+                file << newtab;
+            }
+        }
+        file << "]";
+
+        break;
+    }
+}
 
 void writePair(std::ofstream& file, Pair pair, std::string tab)
 {
     file << '"' << pair.getKey() << "\": ";
-
-    switch (pair.getType())
-    {
-        case TYPE_PAIR::PAIR_NULL :
-            file << "null";
-            break;
-        case TYPE_PAIR::PAIR_NUMBER_I :
-            file << pair.asInt();
-            break;
-        case TYPE_PAIR::PAIR_NUMBER_D :
-            file << pair.asDouble();
-            break;
-        case TYPE_PAIR::PAIR_BOOL :
-            if(pair.asBool())
-                file << "true";
-            else
-                file << "false";
-            break;
-        case TYPE_PAIR::PAIR_STRING :
-            file << '"' << pair.asString()<< '"' ;
-            break;
-        case TYPE_PAIR::PAIR_OBJET :
-            writeObjet(file, pair.asObjet(), tab);
-            break;
-    }
+    writeValue(file, pair, tab);
 }
 
 void Alfodr::JSON::writeJSONFile(const char * path, Objet objet) 

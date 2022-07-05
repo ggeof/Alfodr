@@ -33,7 +33,7 @@ namespace Alfodr{
     using Point2D = Vec2<T>;
 
     template <typename T = float>
-    using Point3D = Vec1<T>;
+    using Point3D = Vec3<T>;
 
 
 #pragma endregion

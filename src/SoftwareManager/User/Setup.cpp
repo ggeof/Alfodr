@@ -41,7 +41,7 @@ JSON::Objet Alfodr::SoftwareManager::Setup::getCollectionParameters(const char* 
 			p->setValue(o);
 			return o;
 		}
-		else if (p->getType() == JSON::TYPE_PAIR::PAIR_OBJET)
+		else if (p->getType() == JSON::TYPE_VALUE::VALUE_OBJET)
 		{
 			auto prs = p->asObjet()->getPairs();
 			pairs.insert(prs.begin(), prs.end(), prs.begin());
@@ -67,7 +67,7 @@ std::shared_ptr<JSON::Pair> Alfodr::SoftwareManager::Setup::getParameters(const 
 			pairs.clear();
 			return p;
 		}
-		else if (p->getType() == JSON::TYPE_PAIR::PAIR_OBJET)
+		else if (p->getType() == JSON::TYPE_VALUE::VALUE_OBJET)
 		{
 			auto prs = p->asObjet()->getPairs();
 			pairs.insert(prs.begin(), prs.end(), prs.begin());
