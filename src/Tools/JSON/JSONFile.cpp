@@ -45,6 +45,9 @@ std::string readUntilChar(std::ifstream& file, char c)
     throw ERRORReadJSONFileException();
 }
 
+#include <iostream>
+#include <sstream>
+
 double readNumber(std::ifstream& file, char cReading)
 {
     bool negatif = false;
@@ -54,73 +57,35 @@ double readNumber(std::ifstream& file, char cReading)
         file.get(cReading);
     }
 
-    double value = 0;
-    size_t virgule = 0, number;
-    do
+    try
     {
-        if(' ' == cReading || '\n' == cReading || '\t' == cReading )
-            continue;
-        switch (cReading)
+        std::string strReading; 
+        std::stringstream iss;
+        double instances;
+        do
         {
-            case '}':
-                file.unget();
-            case ',':
-                return negatif ? -value : value;
-            case '0':
-                number = 0;
-                break;
-            case '1':
-                number = 1;
-                break;
-            case '2':
-                number = 2;
-                break;
-            case '3':
-                number = 3;
-                break;
-            case '4':
-                number = 4;
-                break;
-            case '5':
-                number = 5;
-                break;
-            case '6':
-                number = 6;
-                break;
-            case '7':
-                number = 7;
-                break;
-            case '8':
-                number = 8;
-                break;
-            case '9':
-                number = 9;
-                break;
-            case '.':
-                if(virgule != 0)
-                    throw ERRORReadJSONFileException();
-                virgule = 1;
-                break;
-            default:
-                throw ERRORReadJSONFileException();
-        }
-        if(virgule == 0)
-        {
-            value*=10;
-            value+=number;
-        }
-        else
-        {
-            if(virgule > 1)
+            if(' ' == cReading || '\n' == cReading || '\t' == cReading )
+                continue;
+            switch (cReading)
             {
-                double n = pow(double(10), virgule - 1);
-                value += double(number)/n;
-            }
-            virgule++;
-        }
-    }
-    while (file.get(cReading));
+                case '}':
+                    file.unget();
+                case ',':
+                    iss = std::stringstream(strReading);   
+                    iss >> instances;
+                    return instances;
 
+                default:
+                    strReading += cReading;
+            }
+        }
+        while (file.get(cReading));
+
+    }
+    catch(const std::exception& e)
+    {
+    }
+    
     throw ERRORReadJSONFileException();
 }
 
